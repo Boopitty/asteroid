@@ -39,7 +39,7 @@ Buff.containers = (updatable, drawable, buffs)
 player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
 feild = AsteroidField()
 score = 0
-# 0.001 / 1000
+
 # main loop. this is where the game will run
 while True:
     # enable the user to quit the game
@@ -62,6 +62,7 @@ while True:
             print(f"Time Survived: {survived // 1000}.{(survived % 1000) // 100}")
             pygame.quit()
             exit()
+
         for bullet in bullets:
             if sprite.collide(bullet):
                 bullet.kill()
@@ -71,7 +72,7 @@ while True:
         for buff in buffs:
             if player.collide(buff):
                 buff.kill()
-                player.buff(buff.type)
+                player.activate_buff(buff.type)
 
     # iterate over drawable group and draw each sprite
     for sprite in drawable:
@@ -83,7 +84,6 @@ while True:
     # Set the frame rate to 60 FPS and set dt variable
     # Delta time = seconds since last frame(/1000 turns miliseconds to seconds)
     dt = clock.tick(60) / 1000
-
 
 if __name__ == "__main__":
     main()
