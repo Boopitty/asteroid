@@ -13,6 +13,10 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shoot_cooldown = 0
+        self.speed_timer = 0
+        self.rate_timer = 0
+        self.speed_buff = False
+        self.rate_buff = False
 
     # triangle method returns the three points of the triangle
     def triangle(self):
@@ -30,21 +34,47 @@ class Player(CircleShape):
     
     # rotate the player
     def rotate(self, dt):
-        self.rotation += PLAYER_TURNING_SPEED * dt
+        if self.speed_buff == False:
+            self.rotation += PLAYER_TURNING_SPEED * dt
+        else: 
+            self.rotation += PLAYER_TURNING_SPEED * 1.5 * dt
         return
     
     # move the player
     def move(self, dt):
         # make a vector in the direction the player is facing
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
+
         # move the player in that direction
-        self.position += forward * PLAYER_SPEED * dt
+        if self.speed_buff == False:
+            self.position += forward * PLAYER_SPEED * dt
+        else:
+            self.position += forward * PLAYER_SPEED * 1.5 * dt
+        return
+    
+    def buff(self, buff):
+        # apply buff and set a timer
+        if buff == "speed":
+            self.speed_buff = True
+            self.speed_timer = 14
+        elif buff == "fire rate":
+            self.rate_buff = True
+            self.rate_timer = 7
         return
     
     # update the player position and rotation
     def update(self, dt):
         keys = pygame.key.get_pressed()
+
+        # Update the cooldown and buff timers
         self.shoot_cooldown -= dt
+        self.speed_timer -= dt
+        self.rate_timer -= dt
+
+        if self.speed_timer <= 0:
+            self.speed_buff = False
+        if self.rate_timer <= 0:
+            self.rate_buff = False
 
         if keys[pygame.K_a]:
             # rotate left when a key is pressed
@@ -69,7 +99,12 @@ class Player(CircleShape):
         # and set its velocity to the direction the player is facing
         shot = Bullet(self.position.x, self.position.y)
         shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
-        self.shoot_cooldown = .3
+
+        # shooting cooldown
+        if self.rate_buff == False:
+            self.shoot_cooldown = .3
+        else:
+            self.shoot_cooldown = .1
         return
 
 
