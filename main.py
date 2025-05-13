@@ -57,12 +57,17 @@ while True:
     for sprite in asteroids:
         # check for collisions with the player
         if player.collide(sprite):
-            survived = pygame.time.get_ticks()
-            print("Game Over!")
-            print(f"Asteroids Destroyed: {score}")
-            print(f"Time Survived: {survived // 1000}.{(survived % 1000) // 100}")
-            pygame.quit()
-            exit()
+            if player.effects.is_active("shield"):
+                sprite.kill()
+                player.effects.buffs["shield"]["active"] = False
+                player.effects.buffs["shield"]["timer"] = 0
+            else:
+                survived = pygame.time.get_ticks()
+                print("Game Over!")
+                print(f"Asteroids Destroyed: {score}")
+                print(f"Time Survived: {survived // 1000}.{(survived % 1000) // 100}")
+                pygame.quit()
+                exit()
 
         for bullet in bullets:
             if sprite.collide(bullet):

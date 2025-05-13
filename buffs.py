@@ -8,12 +8,14 @@ class Buff(CircleShape):
         super().__init__(x, y, radius)
 
         # Buffs are spawned with a random type. Color is based on type.
-        self.type = random.choice(["speed", "fire rate"])
+        self.type = random.choice(["speed", "fire rate", "shield"])
         self.radius = radius
         if self.type == "speed":
             self.color = (0, 255, 0)
         elif self.type == "fire rate":
             self.color = (255, 0, 0)
+        elif self.type == "shield":
+            self.color = (0, 0, 255)
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
@@ -32,6 +34,7 @@ class Effects():
         self.buffs = {
             "speed": {"active": False, "duration": 14, "timer": 0, "modifier": 1.5},
             "fire rate": {"active": False, "duration": 7, "timer": 0, "modifier": 0.5},
+            "shield": {"active": False, "duration": 10, "timer": 0, "modifier": 1},
         }
     
     def activate_buff(self, buff_name):
