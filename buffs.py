@@ -43,6 +43,12 @@ class Effects():
         self.buffs[buff_name]["timer"] = self.buffs[buff_name]["duration"]
         return
     
+    def deactivate_buff(self, buff_name):
+        # deactivate buff and reset the timer
+        self.buffs[buff_name]["active"] = False
+        self.buffs[buff_name]["timer"] = 0
+        return
+    
     # check if the given buff timer is over   
     def check_timer(self, buff_name, dt):
         # decrement the timer
@@ -50,8 +56,7 @@ class Effects():
 
         # deactivate buff if time's up and reset the timer
         if self.buffs[buff_name]["timer"] <= 0:
-            self.buffs[buff_name]["timer"] = 0
-            self.buffs[buff_name]["active"] = False
+            self.deactivate_buff(buff_name)
 
     def is_active(self, buff_name):
         return self.buffs[buff_name]["active"]

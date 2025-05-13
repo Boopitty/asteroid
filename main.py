@@ -59,8 +59,7 @@ while True:
         if player.collide(sprite):
             if player.effects.is_active("shield"):
                 sprite.kill()
-                player.effects.buffs["shield"]["active"] = False
-                player.effects.buffs["shield"]["timer"] = 0
+                player.effects.deactivate_buff("shield")
             else:
                 survived = pygame.time.get_ticks()
                 print("Game Over!")
