@@ -54,6 +54,8 @@ while True:
 
     # update all the sprites in the updatable group
     updatable.update(dt)
+
+    # check each asteroid for collisions with the player
     for sprite in asteroids:
         # check for collisions with the player
         if player.collide(sprite):
