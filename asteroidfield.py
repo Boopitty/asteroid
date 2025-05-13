@@ -4,7 +4,6 @@ from asteroid import Asteroid
 from buffs import Buff
 from constants import *
 
-
 class AsteroidField(pygame.sprite.Sprite):
     containers = None
     edges = [

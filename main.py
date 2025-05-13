@@ -8,7 +8,7 @@ pygame.init
 from player import Player
 from bullets import Bullet
 from asteroid import Asteroid
-from buffs import Buff
+from buffs import Buff, Effects
 from asteroidfield import AsteroidField
 
 # create a screen object and print the screen size
@@ -34,6 +34,7 @@ Asteroid.containers = (updatable, drawable, asteroids)
 AsteroidField.containers = (updatable)
 Bullet.containers = (updatable, drawable, bullets)
 Buff.containers = (updatable, drawable, buffs)
+Effects.containers = (updatable)
 
 # create a player object and an asteroid field object
 player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -72,7 +73,7 @@ while True:
         for buff in buffs:
             if player.collide(buff):
                 buff.kill()
-                player.activate_buff(buff.type)
+                player.effects.activate_buff(buff.type)
 
     # iterate over drawable group and draw each sprite
     for sprite in drawable:
