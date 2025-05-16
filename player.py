@@ -27,7 +27,10 @@ class Player(CircleShape):
     
     def draw(self, screen):
         # draw the player as a triangle
-        pygame.draw.polygon(screen, (255, 255, 255), self.triangle(), 2)
+        color = (255, 255, 255)
+        if self.effects.is_active("shield"):
+            color = (0, 0, 255)
+        pygame.draw.polygon(screen, color, self.triangle(), 2)
     
     # rotate the player
     def rotate(self, dt):
@@ -70,7 +73,11 @@ class Player(CircleShape):
             return
         # create a new bullet at the player's position
         # and set its velocity to the direction the player is facing
-        shot = Bullet(self.position.x, self.position.y)
+        color = (255, 255, 255)
+        if self.effects.is_active("fire rate"):
+            color = (255, 0, 0)
+
+        shot = Bullet(self.position.x, self.position.y, color)
         shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
 
         # shooting cooldown

@@ -59,6 +59,13 @@ while True:
     # update all the sprites in the updatable group
     updatable.update(dt)
 
+    if player.effects.is_active("slow"):
+        Asteroid.color = (255, 0, 255)
+        Asteroid.modifier = player.effects.get_modifier("slow")
+    else:
+        Asteroid.color = (255, 255, 255)
+        Asteroid.modifier = 1.0
+
     # check each asteroid for collisions with the player
     for asteroid in asteroids:
 
