@@ -34,7 +34,6 @@ Asteroid.containers = (updatable, drawable, asteroids)
 AsteroidField.containers = (updatable)
 Bullet.containers = (updatable, drawable, bullets)
 Buff.containers = (updatable, drawable, buffs)
-Effects.containers = (updatable)
 
 # create a player object and an asteroid field object
 player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
@@ -52,45 +51,46 @@ while True:
     # fill the screen with black        
     pygame.Surface.fill(screen, color = (0,0,0))
 
+    # Set the frame rate to 60 FPS and set dt variable
+    # Delta time = seconds since last frame(/1000 turns miliseconds to seconds)
+    # sets time between frames to 1/60 of a second
+    dt = clock.tick(60) / 1000
+
     # update all the sprites in the updatable group
     updatable.update(dt)
 
     # check each asteroid for collisions with the player
-    for sprite in asteroids:
-        # check for collisions with the player
-        if player.collide(sprite):
+    for asteroid in asteroids:
+
+        if player.collide(asteroid):
             if player.effects.is_active("shield"):
-                sprite.kill()
+                asteroid.kill()
                 player.effects.deactivate_buff("shield")
             else:
-                survived = pygame.time.get_ticks()
+                survived = pygame.time.get_ticks() # milliseconds
                 print("Game Over!")
                 print(f"Asteroids Destroyed: {score}")
+                # (full seconds).(remaninder of seconds converted to tenths of a second)
                 print(f"Time Survived: {survived // 1000}.{(survived % 1000) // 100}")
                 pygame.quit()
                 exit()
 
         for bullet in bullets:
-            if sprite.collide(bullet):
+            if asteroid.collide(bullet):
                 bullet.kill()
-                sprite.split()
+                asteroid.split()
                 score += 1
-                
-        for buff in buffs:
-            if player.collide(buff):
-                buff.kill()
-                player.effects.activate_buff(buff.type)
+        
+    for buff in buffs:
+        if player.collide(buff):
+            buff.kill()
+            player.effects.activate_buff(buff.type)
 
-    # iterate over drawable group and draw each sprite
     for sprite in drawable:
         sprite.draw(screen)
 
     # update the display
     pygame.display.flip()
-
-    # Set the frame rate to 60 FPS and set dt variable
-    # Delta time = seconds since last frame(/1000 turns miliseconds to seconds)
-    dt = clock.tick(60) / 1000
 
 if __name__ == "__main__":
     main()

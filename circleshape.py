@@ -22,6 +22,7 @@ class CircleShape(pygame.sprite.Sprite):
         pass
 
     def collide(self, other):
+        # check if the two circles radiuses are overlapping
         distance = pygame.Vector2.distance_to(self.position, other.position)
         radiuses = self.radius + other.radius
         return distance <= radiuses

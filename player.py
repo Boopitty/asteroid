@@ -31,7 +31,7 @@ class Player(CircleShape):
     
     # rotate the player
     def rotate(self, dt):
-        self.rotation += PLAYER_TURNING_SPEED * dt * self.effects.modifier("speed")
+        self.rotation += PLAYER_TURNING_SPEED * dt * self.effects.get_modifier("speed")
     
     # move the player
     def move(self, dt):
@@ -39,7 +39,7 @@ class Player(CircleShape):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
 
         # move the player in that direction
-        self.position += forward * PLAYER_SPEED * dt * self.effects.modifier("speed")
+        self.position += forward * PLAYER_SPEED * dt * self.effects.get_modifier("speed")
     
     # update the player position and rotation
     def update(self, dt):
@@ -47,6 +47,7 @@ class Player(CircleShape):
 
         # Update the cooldown and buff timers
         self.shoot_cooldown -= dt
+        self.effects.update(dt)
 
         if keys[pygame.K_a]:
             # rotate left when a key is pressed
@@ -73,4 +74,4 @@ class Player(CircleShape):
         shot.velocity = pygame.Vector2(0,1).rotate(self.rotation) * PLAYER_SHOOT_SPEED
 
         # shooting cooldown
-        self.shoot_cooldown = .3 * self.effects.modifier("fire rate")
+        self.shoot_cooldown = .3 * self.effects.get_modifier("fire rate")

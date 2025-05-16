@@ -19,7 +19,7 @@ class Buff(CircleShape):
 
     def draw(self, screen):
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
-            
+
     def update(self, dt):
         self.position += self.velocity * dt
     
@@ -36,28 +36,23 @@ class Effects():
         }
     
     def activate_buff(self, buff_name):
-        # apply buff and set a timer
         self.buffs[buff_name]["active"] = True
         self.buffs[buff_name]["timer"] = self.buffs[buff_name]["duration"]
     
     def deactivate_buff(self, buff_name):
-        # deactivate buff and reset the timer
         self.buffs[buff_name]["active"] = False
         self.buffs[buff_name]["timer"] = 0
-    
-    # check if the given buff timer is over   
+      
     def check_timer(self, buff_name, dt):
-        # decrement the timer
         self.buffs[buff_name]["timer"] -= dt
-
-        # deactivate buff if time's up and reset the timer
+        
         if self.buffs[buff_name]["timer"] <= 0:
             self.deactivate_buff(buff_name)
 
     def is_active(self, buff_name):
         return self.buffs[buff_name]["active"]
 
-    def modifier(self, buff_name):
+    def get_modifier(self, buff_name):
         if self.buffs[buff_name]["active"]:
             return self.buffs[buff_name]["modifier"]
         else:
@@ -66,4 +61,5 @@ class Effects():
     def update(self, dt):
         # update the timers for all buffs
         for buff_name in self.buffs:
-            self.check_timer(buff_name, dt)
+            if self.buffs[buff_name]["active"]:
+                self.check_timer(buff_name, dt)
